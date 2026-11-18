@@ -35,7 +35,7 @@ export default function Schedule() {
         description="Classes, homework deadlines, tests, speaking sessions, consultations and exams — all in one timeline."
       />
 
-      <div className="space-y-6">
+      <div className="agenda space-y-6">
         {Object.entries(grouped).map(([date, events]) => (
           <div key={date}>
             <div className="font-mono text-xs uppercase tracking-wide text-[var(--color-slate)] mb-2">{date}</div>

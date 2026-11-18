@@ -42,7 +42,7 @@ export default function CourseDetail() {
         ← All courses
       </Link>
 
-      <div className="mt-4 mb-8">
+      <div className="course-intro mt-4 mb-8">
         <div className="flex items-center gap-2 mb-3">
           <Pill tone="neutral">{course.category}</Pill>
           <Pill tone="gold">{course.levelRange}</Pill>
@@ -62,12 +62,12 @@ export default function CourseDetail() {
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="module-path space-y-4">
         {course.modules.map((m, idx) => (
           <Card key={m.id} className={`p-6 ${!m.unlocked ? "opacity-60" : ""}`}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <span className="font-mono text-xs text-[var(--color-slate)]">{String(idx + 1).padStart(2, "0")}</span>
+                <span className="module-stop">{String(idx + 1).padStart(2, "0")}</span>
                 <h3 className="font-[family-name:var(--font-display)] text-lg">{m.title}</h3>
               </div>
               {!m.unlocked && (

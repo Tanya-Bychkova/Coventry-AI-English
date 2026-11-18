@@ -37,7 +37,7 @@ export default function Progress() {
     <div>
       <PageHeader eyebrow="Overview" title="Your progress" description="Track your hours, vocabulary growth, skill balance and CEFR trajectory." />
 
-      <div className="grid md:grid-cols-4 gap-4 mb-8">
+      <div className="metric-strip grid md:grid-cols-4 gap-4 mb-8">
         <Card className="p-5">
           <div className="text-xs font-mono uppercase text-[var(--color-slate)] mb-1">Hours studied</div>
           <div className="font-[family-name:var(--font-display)] text-2xl">29.9h</div>

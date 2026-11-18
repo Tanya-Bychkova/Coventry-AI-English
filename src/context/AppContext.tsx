@@ -37,6 +37,10 @@ function loadJSON<T>(key: string, fallback: T): T {
   }
 }
 
+function storeJSON(key: string, value: unknown) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* Keep the current session usable when storage is unavailable. */ }
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const [role, setRoleState] = useState<Role | null>(() => loadJSON("cuk_role", null));
   const [submissions, setSubmissions] = useState<HomeworkSubmission[]>(() =>
@@ -50,11 +54,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     loadJSON("cuk_pending_reviews", initialPendingReviews)
   );
 
-  useEffect(() => localStorage.setItem("cuk_role", JSON.stringify(role)), [role]);
-  useEffect(() => localStorage.setItem("cuk_submissions", JSON.stringify(submissions)), [submissions]);
-  useEffect(() => localStorage.setItem("cuk_vocab", JSON.stringify(vocab)), [vocab]);
-  useEffect(() => localStorage.setItem("cuk_notifications", JSON.stringify(notifications)), [notifications]);
-  useEffect(() => localStorage.setItem("cuk_pending_reviews", JSON.stringify(pendingReviews)), [pendingReviews]);
+  useEffect(() => storeJSON("cuk_role", role), [role]);
+  useEffect(() => storeJSON("cuk_submissions", submissions), [submissions]);
+  useEffect(() => storeJSON("cuk_vocab", vocab), [vocab]);
+  useEffect(() => storeJSON("cuk_notifications", notifications), [notifications]);
+  useEffect(() => storeJSON("cuk_pending_reviews", pendingReviews), [pendingReviews]);
 
   const setRole = (r: Role | null) => setRoleState(r);
 
@@ -65,7 +69,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return null;
   }, [role]);
 
-  const addSubmission = (s: HomeworkSubmission) => setSubmissions((prev) => [s, ...prev]);
+  const addSubmission = (s: HomeworkSubmission) => {
+    setSubmissions(prev => [s, ...prev]);
+    setPendingReviews(prev => [s, ...prev]);
+  };
 
   const addVocabWord = (w: VocabWord) => setVocab((prev) => [w, ...prev]);
 
@@ -86,9 +93,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const addNotification = (n: NotificationItem) => setNotifications((prev) => [n, ...prev]);
 
   const gradeSubmission = (id: string, comment: string, score: number) => {
-    setPendingReviews((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, teacherComment: comment, teacherScore: score, status: "teacher-reviewed" } : s))
-    );
+    const update = (prev: HomeworkSubmission[]): HomeworkSubmission[] =>
+      prev.map((s) => (s.id === id ? { ...s, teacherComment: comment, teacherScore: score, status: "teacher-reviewed" } : s));
+    setPendingReviews(update);
+    setSubmissions(update);
+    if (submissions.some(s => s.id === id)) addNotification({id: "review-" + id, kind: "comment", title: "Homework reviewed", body: comment || "Your teacher returned your score.", time: "Just now", read: false});
   };
 
   return (

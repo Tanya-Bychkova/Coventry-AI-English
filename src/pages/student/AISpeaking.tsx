@@ -39,7 +39,7 @@ export default function AISpeaking() {
       <PageHeader
         eyebrow="Speaking practice"
         title="AI Speaking Partner"
-        description="Have a spoken-style conversation with the AI examiner. Type your answer as you would say it out loud — the AI scores fluency and pronunciation and keeps the conversation going, IELTS/Cambridge style."
+        description="Type your answer as you would say it aloud. Explore sample examiner prompts and simulated feedback on your written response."
       />
 
       <div className="grid lg:grid-cols-3 gap-6">

@@ -8,7 +8,7 @@ export default function Certificates() {
       <PageHeader
         eyebrow="Achievements"
         title="Certificates"
-        description="Awarded automatically when you complete a course — each one is verifiable under your Coventry University Kazakhstan student record."
+        description="Explore example certificates for completed courses in this demo."
       />
 
       {certificates.length === 0 ? (

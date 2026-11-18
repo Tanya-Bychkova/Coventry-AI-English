@@ -6,7 +6,6 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGri
 import type { CEFRLevel } from "../../types";
 import { CheckCircle2 } from "lucide-react";
 
-const LEVELS: CEFRLevel[] = ["Pre-A1", "A1", "A2 Key", "B1 Preliminary (PET)", "B2 First (FCE)", "C1 Advanced (CAE)"] as unknown as CEFRLevel[];
 
 const GRAMMAR_Q = [
   { q: "By this time next year, I ___ university.", options: ["will finish", "will have finished", "finish"], answer: "will have finished" },
@@ -79,16 +78,8 @@ export default function Testing() {
         <PageHeader
           eyebrow="Cambridge English standards"
           title="Progress test"
-          description="Six skills — Grammar, Vocabulary, Reading, Listening, Writing, Speaking — scored against CEFR levels from Pre-A1 to C2."
+          description="Try a six-part B1 practice test with sample questions, a listening transcript and two written responses. Your results show a simulated score for each skill."
         />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          {LEVELS.map((lvl) => (
-            <Card key={lvl} className="p-5">
-              <div className="font-[family-name:var(--font-display)] text-lg mb-1">{lvl}</div>
-              <div className="text-xs text-[var(--color-slate)]">Full skills test</div>
-            </Card>
-          ))}
-        </div>
         <Button onClick={() => setStage("grammar")}>Start B1 Preliminary test →</Button>
       </div>
     );
@@ -126,9 +117,16 @@ export default function Testing() {
     );
   }
 
+  const currentStep = order.indexOf(stage) + 1;
+  const stepIndicator = <div className="test-steps" aria-label={`Section ${currentStep} of 6`}>
+    <strong>Section {currentStep} of 6</strong>
+    <div aria-hidden="true">{order.slice(0, 6).map((skill, i) => <span key={skill} className={i < currentStep ? "filled" : ""}/>)}</div>
+  </div>;
+
   const renderMCQ = (questions: { q: string; options: string[]; answer: string }[], prefix: string, title: string) => (
     <div>
       <PageHeader eyebrow="B1 Preliminary" title={title} />
+      {stepIndicator}
       <div className="space-y-5 mb-6">
         {stage === "reading" && (
           <Card className="p-5 mb-2">
@@ -142,6 +140,7 @@ export default function Testing() {
               {item.options.map((opt) => (
                 <button
                   key={opt}
+                  aria-pressed={answers[`${prefix}-${i}`] === opt}
                   onClick={() => setAnswers((a) => ({ ...a, [`${prefix}-${i}`]: opt }))}
                   className={`text-left px-4 py-2.5 rounded-lg border text-sm transition-colors ${
                     answers[`${prefix}-${i}`] === opt
@@ -156,7 +155,7 @@ export default function Testing() {
           </Card>
         ))}
       </div>
-      <Button onClick={goNext}>Continue →</Button>
+      <Button disabled={questions.some((_, i) => !answers[prefix + "-" + i])} onClick={goNext}>Continue →</Button>
     </div>
   );
 
@@ -169,6 +168,7 @@ export default function Testing() {
     return (
       <div>
         <PageHeader eyebrow="B1 Preliminary" title="Writing" description="Write a short email (60–90 words) to a friend describing your plans for the weekend." />
+        {stepIndicator}
         <Card className="p-5 mb-6">
           <textarea
             value={writingText}
@@ -178,7 +178,7 @@ export default function Testing() {
             className="w-full border border-[var(--color-line)] rounded-lg px-3 py-2.5 text-sm resize-none"
           />
         </Card>
-        <Button onClick={goNext}>Continue →</Button>
+        <Button disabled={!writingText.trim()} onClick={goNext}>Continue →</Button>
       </div>
     );
   }
@@ -191,6 +191,7 @@ export default function Testing() {
           title="Speaking"
           description='Simulated speaking task — type what you would say in response to: "Describe your favourite way to spend a weekend."'
         />
+        {stepIndicator}
         <Card className="p-5 mb-6">
           <textarea
             value={speakingText}
@@ -200,7 +201,7 @@ export default function Testing() {
             className="w-full border border-[var(--color-line)] rounded-lg px-3 py-2.5 text-sm resize-none"
           />
         </Card>
-        <Button onClick={goNext}>
+        <Button disabled={!speakingText.trim()} onClick={goNext}>
           <CheckCircle2 size={16} /> Finish test
         </Button>
       </div>

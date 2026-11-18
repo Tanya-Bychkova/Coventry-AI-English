@@ -1,75 +1,17 @@
-# Coventry English AI — Prototype
+# Coventry English AI
+An independent university English-learning portfolio demo. Start with the vocabulary deck, enter a student workspace, submit written homework, then switch to Teacher to review it. Return to Student to see the feedback. Administrator opens sample faculty analytics.
 
-A working TypeScript + React prototype of the AI-powered English learning platform
-described in the technical specification for Coventry University Kazakhstan.
+## Open the portfolio demo
+Extract the project ZIP and double-click Open-Demo.html. All scripts and styles are included in that file.
 
-This implements every module from the spec as a functional, navigable app with
-realistic mock data and **simulated AI** (rule-based grading, no external API calls),
-so you can click through the whole experience with no setup beyond `npm install`.
+## Try locally
+With Node.js 22 installed, run `npm ci` followed by `npm run dev` and open http://localhost:5173. For a production build, run `npm run build`. The generated dist folder also opens directly in a desktop browser via index.html.
 
-## What's implemented
+## Docker
+Run `docker compose up --build` and open http://localhost:8080. Run `docker compose down` to stop it.
 
-- **Student portal**: personal dashboard, courses (Coursera-style modules that
-  unlock progressively), homework submission with instant simulated AI grading
-  (spelling/grammar checks, CEFR level estimate, feedback), CEFR progress testing
-  across Grammar / Vocabulary / Reading / Listening / Writing / Speaking, an AI
-  Speaking partner (chat-style practice with fluency & pronunciation scoring), an
-  AI Writing Coach, a vocabulary bank ("My Words") with spaced-repetition
-  flashcards, a schedule, a progress dashboard with charts, an AI Tutor chat,
-  notifications, and certificates.
-- **Teacher portal**: dashboard, course management (create/upload materials/assign
-  homework), a review queue for AI-graded submissions (add comments, override
-  scores), and a student roster.
-- **Admin portal**: platform-wide analytics — average level by faculty, attendance
-  trend, level distribution, usage reports.
+## GitHub Pages
+In repository Settings → Pages, select **GitHub Actions** as the build source. The workflow on main installs the pinned dependencies, type-checks and builds the app, starts the Docker image, requests the compiled application, then publishes dist. For the first deployment, run **Verify and deploy portfolio demo** in Actions if needed.
 
-Data persists locally in the browser (`localStorage`) so submissions, saved
-vocabulary and notifications survive a refresh. There's no real backend or
-database — see "Turning this into a real product" below.
-
-## Design
-
-- Colors: ink/charcoal navy, an academic red accent, warm parchment background,
-  slate for secondary text, gold for certificates/achievements, green for success.
-- Type: Fraunces (display serif) for headings, IBM Plex Sans for body text,
-  IBM Plex Mono for scores, levels and data.
-- Signature element: a hexagonal CEFR level badge (Pre-A1 -> C2) used consistently
-  across the app -- profile, homework, tests, certificates -- since level is the
-  organizing idea of the whole product.
-
-## Running it
-
-```bash
-npm install
-npm run dev       # http://localhost:5173
-```
-
-To build a production bundle:
-
-```bash
-npm run build
-npm run preview
-```
-
-## Project structure
-
-```
-src/
-  types/               shared TypeScript types
-  data/mockData.ts     seed data (courses, tests, schedule, vocab, notifications...)
-  lib/aiSimulator.ts   rule-based "AI" grading, CEFR scoring, chat responses
-  context/AppContext.tsx   role switching + persisted state (localStorage)
-  components/          shared UI (Layout/sidebar, LevelHex badge, Card/Button/Pill...)
-  pages/student/        12 student-facing pages
-  pages/teacher/        4 teacher-facing pages
-  pages/admin/          analytics dashboard
-```
-
-## Turning this into a real product
-
-This prototype simulates the AI features with deterministic client-side logic
-(`src/lib/aiSimulator.ts`) so the whole thing runs anywhere with no API keys.
-To make the AI genuinely intelligent, that file is the integration point -- swap
-its functions for calls to a real language model (e.g. via a backend that proxies
-the Anthropic API) for writing/speech analysis, and add a real backend
-(database + auth) behind `AppContext.tsx` in place of `localStorage`.
+## Demo data
+The three roles share one browser’s local storage. Written feedback, speaking prompts and sample analytics run locally without an API key. Scores illustrate the interface and have no academic validity. Use the same browser and URL when switching roles to try the teacher review flow.

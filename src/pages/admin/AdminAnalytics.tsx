@@ -39,14 +39,14 @@ const levelDistribution = [
   { name: "C1", value: 8 },
 ];
 
-const PIE_COLORS = ["#dcefe4", "#c9e6d6", "#f5e6cc", "#f1e4c8", "#c8102e"];
+const PIE_COLORS = ["#acdfff", "#669ef0", "#3471d7", "#254aa4", "#172f63"];
 
 export default function AdminAnalytics() {
   return (
     <div>
       <PageHeader eyebrow="Administration" title="Platform analytics" description="Performance, attendance, faculty progress and usage across Coventry University Kazakhstan." />
 
-      <div className="grid md:grid-cols-4 gap-4 mb-8">
+      <div className="metric-strip grid md:grid-cols-4 gap-4 mb-8">
         <Card className="p-5">
           <div className="flex items-center gap-2 text-xs font-mono uppercase text-[var(--color-slate)] mb-2">
             <Users size={14} /> Active students
@@ -111,7 +111,7 @@ export default function AdminAnalytics() {
           <div style={{ width: "100%", height: 260 }}>
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={levelDistribution} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} label>
+                <Pie data={levelDistribution} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={45} outerRadius={84} label>
                   {levelDistribution.map((_, i) => (
                     <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
                   ))}

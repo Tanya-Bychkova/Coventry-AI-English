@@ -1,86 +1,50 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowUpRight, ArrowRight, BookOpen, RotateCw, GraduationCap, Presentation, ChartNoAxesCombined } from "lucide-react";
 import { useApp } from "../context/AppContext";
 import type { Role } from "../types";
-import { GraduationCap, Presentation, ShieldCheck } from "lucide-react";
 
-const options: { role: Role; title: string; desc: string; icon: typeof GraduationCap; path: string }[] = [
-  {
-    role: "student",
-    title: "Student",
-    desc: "Courses, homework, AI Speaking & Writing, testing, vocabulary, progress.",
-    icon: GraduationCap,
-    path: "/student",
-  },
-  {
-    role: "teacher",
-    title: "Teacher",
-    desc: "Manage courses, review AI-graded homework, adjust scores and comments.",
-    icon: Presentation,
-    path: "/teacher",
-  },
-  {
-    role: "admin",
-    title: "Administrator",
-    desc: "Platform-wide analytics: performance, attendance, faculty progress.",
-    icon: ShieldCheck,
-    path: "/admin",
-  },
+const roles = [
+  { role: "student", label: "Student", detail: "Practise English and track your progress.", icon: GraduationCap },
+  { role: "teacher", label: "Teacher", detail: "Review assignments and give feedback.", icon: Presentation },
+  { role: "admin", label: "Administrator", detail: "Explore learning across faculties.", icon: ChartNoAxesCombined },
+] as const;
+
+const words = [
+  { word: "Curiosity", type: "noun", meaning: "A strong desire to learn or know something." },
+  { word: "Fluent", type: "adjective", meaning: "Able to speak a language easily and clearly." },
+  { word: "Explore", type: "verb", meaning: "To look closely at a place or idea and discover more." },
 ];
 
 export default function Login() {
   const { setRole } = useApp();
   const navigate = useNavigate();
-
-  const choose = (role: Role, path: string) => {
+  const [index, setIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const card = words[index];
+  function enter(role: Role) {
     setRole(role);
-    navigate(path);
-  };
-
-  return (
-    <div className="min-h-screen bg-[var(--color-ink)] text-white flex flex-col">
-      <div className="flex-1 flex items-center justify-center px-6 py-16">
-        <div className="w-full max-w-4xl">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="hex-clip w-11 h-11 bg-[var(--color-red)] flex items-center justify-center font-[family-name:var(--font-display)] font-semibold">
-              CU
-            </div>
-            <div className="font-mono text-xs uppercase tracking-[0.2em] text-white/50">
-              Coventry University Kazakhstan
-            </div>
-          </div>
-
-          <h1 className="font-[family-name:var(--font-display)] text-5xl md:text-6xl leading-[1.05] mb-5 max-w-2xl">
-            One platform to learn, test, and speak English with AI.
-          </h1>
-          <p className="text-white/60 max-w-xl mb-12 text-lg leading-relaxed">
-            Courses, homework grading, Cambridge-style testing, an AI speaking partner and writing coach —
-            built for CUK students, teachers and administrators.
-          </p>
-
-          <div className="grid sm:grid-cols-3 gap-4">
-            {options.map(({ role, title, desc, icon: Icon, path }) => (
-              <button
-                key={role}
-                onClick={() => choose(role, path)}
-                className="text-left bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-[var(--color-red)]/50 transition-all group"
-              >
-                <Icon size={26} strokeWidth={1.6} className="text-[var(--color-red)] mb-4" />
-                <div className="font-[family-name:var(--font-display)] text-xl mb-2 group-hover:text-white">
-                  {title}
-                </div>
-                <div className="text-sm text-white/50 leading-relaxed">{desc}</div>
-                <div className="mt-4 text-xs font-mono uppercase tracking-wider text-[var(--color-red)]">
-                  Continue →
-                </div>
-              </button>
-            ))}
-          </div>
-
-          <p className="text-white/30 text-xs mt-10 font-mono">
-            Prototype build — demo accounts, no real login required.
-          </p>
-        </div>
+    navigate("/" + role);
+  }
+  return <main className="landing">
+    <header className="mast"><div className="brand"><span className="brand-icon"><BookOpen /></span> Coventry English AI</div><span className="edition">Portfolio demo</span></header>
+    <section className="cover">
+      <div className="intro"><p className="kicker">Coventry · English language lab</p>
+        <h1>Find your<br/><em>English voice.</em></h1>
+        <p className="lede">Build confidence for your next seminar, essay or conversation with bite-sized English practice.</p>
+        <button className="start" onClick={() => enter("student")}>Enter student demo <ArrowRight size={19}/></button>
       </div>
-    </div>
-  );
+      <div className="deck"><div className="card-stack">
+        <button className="word-card" onClick={() => setFlipped(!flipped)} aria-label={flipped ? "Show word" : "Reveal definition"}>
+          <span className="card-meta"><BookOpen size={19}/> Vocabulary practice</span>
+          <span key={card.word + flipped} className={flipped ? "definition" : "display-word"}>{flipped ? card.meaning : card.word}</span>
+          <span className="card-bottom">{flipped ? "Definition" : card.type}<RotateCw size={19}/></span>
+        </button></div>
+        <div className="deck-controls"><span>Flashcard {index+1} / {words.length}</span><button onClick={() => {setIndex((index+1)%words.length); setFlipped(false);}}>Next word <ArrowRight size={16}/></button></div>
+      </div>
+    </section>
+    <section className="portals"><h2>Choose your workspace</h2><div className="portal-grid">{roles.map(({role,label,detail,icon:Icon}) =>
+      <button key={role} className={'portal '+role} onClick={() => enter(role)}><span className="portal-icon"><Icon size={23}/></span><span><strong>{label}</strong><small>{detail}</small></span><ArrowUpRight size={19}/></button>
+    )}</div></section><footer className="foot">Independent student portfolio project · Sample accounts and simulated AI feedback</footer>
+  </main>;
 }

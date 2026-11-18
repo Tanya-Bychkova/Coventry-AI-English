@@ -8,7 +8,6 @@ export default function MyWords() {
   const [mode, setMode] = useState<"list" | "flashcards">("list");
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ word: "", translation: "", example: "", synonyms: "" });
-  const [cardIdx, setCardIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
 
   const today = new Date().toISOString().slice(0, 10);
@@ -30,13 +29,12 @@ export default function MyWords() {
     setShowForm(false);
   };
 
-  const card = dueToday[cardIdx];
+  const card = dueToday[0];
 
   const handleReview = (known: boolean) => {
     if (!card) return;
     reviewWord(card.id, known);
     setFlipped(false);
-    setCardIdx((i) => (i + 1 < dueToday.length ? i + 1 : 0));
   };
 
   return (
@@ -105,7 +103,7 @@ export default function MyWords() {
 
           <div className="grid md:grid-cols-2 gap-4">
             {vocab.map((w) => (
-              <Card key={w.id} className="p-5">
+              <Card key={w.id} className="vocab-note p-5">
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="font-[family-name:var(--font-display)] text-lg">{w.word}</h3>
                   <Pill tone="gold">Box {w.box}/5</Pill>
@@ -132,7 +130,7 @@ export default function MyWords() {
             <EmptyState title="All caught up" body="No words are due for review right now — come back later." />
           ) : (
             <Card
-              className="p-10 text-center cursor-pointer min-h-[260px] flex flex-col items-center justify-center"
+              className="study-flashcard p-10 text-center cursor-pointer min-h-[260px] flex flex-col items-center justify-center"
               onClick={() => setFlipped((f) => !f)}
             >
               <div className="text-xs font-mono uppercase text-[var(--color-slate)] mb-4 flex items-center gap-1.5">

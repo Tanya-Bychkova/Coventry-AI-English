@@ -12,7 +12,7 @@ export default function TeacherDashboard() {
     <div>
       <PageHeader eyebrow="Teacher portal" title="Welcome, Dr. Hartford" description="Your courses, students, and AI-graded work waiting for your review." />
 
-      <div className="grid md:grid-cols-3 gap-4 mb-8">
+      <div className="metric-strip grid md:grid-cols-3 gap-4 mb-8">
         <Card className="p-5">
           <div className="flex items-center gap-2 text-xs font-mono uppercase text-[var(--color-slate)] mb-2">
             <BookOpen size={14} /> Active courses
@@ -33,11 +33,11 @@ export default function TeacherDashboard() {
         </Card>
       </div>
 
-      <Card className="p-6">
+      <Card className="review-queue p-6">
         <div className="flex items-center justify-between mb-5">
           <h2 className="font-[family-name:var(--font-display)] text-xl">Recent AI-graded submissions</h2>
           <Link to="/teacher/reviews" className="text-sm text-[var(--color-red)] font-medium">
-            Review all →
+            Open review queue →
           </Link>
         </div>
         <div className="space-y-3">

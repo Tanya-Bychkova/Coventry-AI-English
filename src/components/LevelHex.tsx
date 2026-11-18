@@ -3,13 +3,13 @@ import type { CEFRLevel } from "../types";
 const LEVEL_ORDER: CEFRLevel[] = ["Pre-A1", "A1", "A2", "B1", "B2", "C1", "C2"];
 
 const LEVEL_COLORS: Record<CEFRLevel, { bg: string; fg: string }> = {
-  "Pre-A1": { bg: "#e4e1d6", fg: "#5c6470" },
-  A1: { bg: "#dcefe4", fg: "#1f8f5f" },
-  A2: { bg: "#c9e6d6", fg: "#1f8f5f" },
-  B1: { bg: "#f5e6cc", fg: "#b8720b" },
-  B2: { bg: "#f1e4c8", fg: "#b5893a" },
-  C1: { bg: "#f6d9de", fg: "#c8102e" },
-  C2: { bg: "#93081f", fg: "#ffffff" },
+  "Pre-A1": { bg: "#ebf3ff", fg: "#36516c" },
+  A1: { bg: "#e4f6ff", fg: "#12456b" },
+  A2: { bg: "#c1e5ff", fg: "#12456b" },
+  B1: { bg: "#a9d5ff", fg: "#163c76" },
+  B2: { bg: "#87bcff", fg: "#092e6d" },
+  C1: { bg: "#496cc6", fg: "#ffffff" },
+  C2: { bg: "#143773", fg: "#ffffff" },
 };
 
 export function LevelHex({
@@ -50,8 +50,8 @@ export function LevelLadder({ current }: { current: CEFRLevel }) {
               style={{
                 width: isCurrent ? 30 : 22,
                 height: isCurrent ? 30 : 22,
-                background: active ? (isCurrent ? "#c8102e" : "#f1e4c8") : "#e4e1d6",
-                color: active ? (isCurrent ? "#fff" : "#93081f") : "#8a90a0",
+                background: active ? (isCurrent ? "#1859c3" : "#b6d9ff") : "#ebf3ff",
+                color: active ? (isCurrent ? "#fff" : "#143773") : "#4e6486",
               }}
             >
               {lvl.replace("Pre-", "")}

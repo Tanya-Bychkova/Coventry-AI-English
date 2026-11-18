@@ -1,3 +1,4 @@
+import { DailyPractice } from "../../components/DailyPractice";
 import { Link } from "react-router-dom";
 import { Card, Pill, ProgressBar, PageHeader } from "../../components/ui";
 import { LevelLadder } from "../../components/LevelHex";
@@ -18,7 +19,8 @@ export default function Dashboard() {
         description="Here's where you left off — pick up a course, practise speaking, or review your saved words."
       />
 
-      <div className="grid md:grid-cols-4 gap-4 mb-8">
+      <DailyPractice />
+      <div className="metric-strip grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <Card className="p-5">
           <div className="flex items-center gap-2 text-[var(--color-slate)] text-xs font-mono uppercase tracking-wide mb-2">
             <Flame size={14} /> Study streak
@@ -82,7 +84,7 @@ export default function Dashboard() {
           </div>
           <p className="text-sm text-[var(--color-slate)] leading-relaxed">
             Based on your last progress test, you're currently at <strong className="text-[var(--color-ink)]">B1 (Intermediate)</strong>.
-            Complete Module 2's test to update your level.
+            Try the practice test to see a sample score report.
           </p>
         </Card>
       </div>

@@ -1,8 +1,11 @@
+import { BookOpen, BriefcaseBusiness, MessagesSquare, NotebookPen } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Card, Pill, ProgressBar, PageHeader } from "../../components/ui";
 import { courses } from "../../data/mockData";
 import type { Course } from "../../types";
+
+const subjectIcons = {"General English": BookOpen, "IELTS Prep": MessagesSquare, "Business English": BriefcaseBusiness, "Academic Writing": NotebookPen};
 
 const categories: (Course["category"] | "All")[] = ["All", "General English", "IELTS Prep", "Business English", "Academic Writing"];
 
@@ -15,7 +18,7 @@ export default function Courses() {
       <PageHeader
         eyebrow="Learning"
         title="Your courses"
-        description="Structured like Coursera: modules unlock as you progress, each finishing with a test."
+        description="Choose a course to see your next module and practise at your level."
       />
 
       <div className="flex gap-2 mb-6 flex-wrap">
@@ -33,9 +36,12 @@ export default function Courses() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-5">
-        {filtered.map((c) => (
+        {filtered.map((c) => {
+          const Subject = subjectIcons[c.category];
+          return (
           <Link key={c.id} to={`/student/courses/${c.id}`}>
-            <Card className="p-6 h-full hover:border-[var(--color-red)]/40 transition-colors">
+            <Card className="course-tile p-6 h-full hover:border-[var(--color-red)]/40 transition-colors">
+              <div className="subject-cover"><Subject size={37} strokeWidth={1.8}/></div>
               <div className="flex items-center justify-between mb-3">
                 <Pill tone="neutral">{c.category}</Pill>
                 <Pill tone="gold">{c.levelRange}</Pill>
@@ -50,7 +56,7 @@ export default function Courses() {
               <div className="text-xs font-mono text-[var(--color-slate)] mt-3">Deadline: {c.deadline}</div>
             </Card>
           </Link>
-        ))}
+        )})}
       </div>
     </div>
   );

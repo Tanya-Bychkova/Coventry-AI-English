@@ -10,7 +10,7 @@ export default function ReviewSubmissions() {
   const setDraft = (id: string, field: "comment" | "score", value: string | number) => {
     setDrafts((prev) => ({
       ...prev,
-      [id]: { comment: prev[id]?.comment ?? "", score: prev[id]?.score ?? 0, [field]: value },
+      [id]: { comment: prev[id]?.comment ?? "", score: prev[id]?.score ?? pendingReviews.find(s => s.id === id)?.aiScore ?? 0, [field]: value },
     }));
   };
 
@@ -68,7 +68,7 @@ export default function ReviewSubmissions() {
                 />
                 <input
                   disabled={done}
-                  type="number"
+                  type="number" min={0} max={100}
                   value={draft.score}
                   onChange={(e) => setDraft(s.id, "score", Number(e.target.value))}
                   className="border border-[var(--color-line)] rounded-lg px-3 py-2 text-sm disabled:opacity-60"
@@ -77,7 +77,7 @@ export default function ReviewSubmissions() {
               </div>
               {!done && (
                 <div className="mt-3 flex justify-end">
-                  <Button onClick={() => gradeSubmission(s.id, draft.comment, draft.score)}>Confirm & return to student</Button>
+                  <Button disabled={!Number.isInteger(draft.score) || draft.score < 0 || draft.score > 100} onClick={() => gradeSubmission(s.id, draft.comment, draft.score)}>Confirm & return to student</Button>
                 </div>
               )}
             </Card>

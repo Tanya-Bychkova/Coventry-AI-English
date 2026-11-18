@@ -15,7 +15,7 @@ export default function Students() {
     <div>
       <PageHeader eyebrow="Cohort overview" title="Students" description="Track progress and CEFR level across your groups." />
 
-      <Card className="overflow-hidden">
+      <Card className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-xs font-mono uppercase text-[var(--color-slate)] border-b border-[var(--color-line)]">
