@@ -1,3 +1,4 @@
+import { ThemeSwitch } from "../components/ThemeSwitch";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowUpRight, ArrowRight, BookOpen, RotateCw, GraduationCap, Presentation, ChartNoAxesCombined } from "lucide-react";
@@ -27,7 +28,7 @@ export default function Login() {
     navigate("/" + role);
   }
   return <main className="landing">
-    <header className="mast"><div className="brand"><span className="brand-icon"><BookOpen /></span> Coventry English AI</div><span className="edition">Portfolio demo</span></header>
+    <header className="mast"><div className="brand"><span className="brand-icon"><BookOpen /></span> Coventry English AI</div><ThemeSwitch/></header>
     <section className="cover">
       <div className="intro"><p className="kicker">Coventry · English language lab</p>
         <h1>Find your<br/><em>English voice.</em></h1>

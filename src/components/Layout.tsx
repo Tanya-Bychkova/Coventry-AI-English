@@ -1,3 +1,4 @@
+import { ThemeSwitch } from "./ThemeSwitch";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -78,7 +79,7 @@ export function Layout({ children }: { children: ReactNode }) {
       </aside>
       <div className="lab-body">
         <header className="lab-top"><div className="crumb"><strong>{role === "admin" ? "Administration" : role === "teacher" ? "Teacher workspace" : "Student workspace"}</strong><span>/</span>{current?.label}</div>
-          <div className="user-tools">{role === "student" && <NavLink to="/student/notifications" aria-label={`Notifications, ${unread} unread`}><Bell size={19}/>{unread > 0 && <sup>{unread}</sup>}</NavLink>}
+          <div className="user-tools"><ThemeSwitch/>{role === "student" && <NavLink to="/student/notifications" aria-label={`Notifications, ${unread} unread`}><Bell size={19}/>{unread > 0 && <sup>{unread}</sup>}</NavLink>}
             <span className="avatar">{user?.avatarInitials}</span><span className="user-name">{user?.fullName}</span></div>
         </header>
         <main className="lab-main">{children}</main>
