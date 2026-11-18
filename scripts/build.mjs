@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { build, context } from 'esbuild';
 import { mkdir, readFile, writeFile, copyFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -38,4 +39,6 @@ if (dev) {
     .replace('<link rel="stylesheet" href="./app.css">', () => '<style>' + css + '</style>')
     .replace('<script defer src="./app.js"></script>', () => '<script>' + js.replace(/<\/script/gi, '<\\/script') + '</script>');
   await writeFile('Open-Demo.html', offline);
+  const version = createHash('sha256').update(js).update(css).digest('hex').slice(0, 12);
+  await writeFile('dist/index.html', html.replace('./app.js', './app.js?v=' + version).replace('./app.css', './app.css?v=' + version));
 }
